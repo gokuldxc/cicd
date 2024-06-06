@@ -17,5 +17,5 @@ steps:
     location: 'Central US'
     templateLocation: 'Linked artifact'
     csmFile: 'test'
-    csmParametersFile: 'deploymentParameters.json'
+    csmParametersFile: 'https://raw.githubusercontent.com/gokuldxc/cicd/main/deploymentParameters.json'
     deploymentMode: 'Incremental'
