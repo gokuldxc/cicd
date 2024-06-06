@@ -156,15 +156,13 @@
         "TestImageOffer": "UbuntuServer",
         "TestOSDiskName": "TestOSDisk",
         "TestVmSize": "Standard_D1",
-        "TestVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-test')]",
+        "TestVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'RG_test-vnet')]",
         "TestSubnetRef": "[concat(variables('TestVnetID'), '/subnets/', variables('vnet-testSubnet1Name'))]",
         "TestStorageAccountContainerName": "vhds",
         "TestNicName": "[concat(parameters('TestName'), 'NetworkInterface')]",
         "vnet-testPrefix": "10.0.0.0/16",
-        "vnet-testSubnet1Name": "Subnet-1",
+        "vnet-testSubnet1Name": "default",
         "vnet-testSubnet1Prefix": "10.0.0.0/24",
-        "vnet-testSubnet2Name": "Subnet-2",
-        "vnet-testSubnet2Prefix": "10.0.1.0/24",
         "testName": "[concat('test', uniqueString(resourceGroup().id))]"
     }
 }

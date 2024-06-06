@@ -19,6 +19,3 @@ steps:
     csmFileLink: 'https://raw.githubusercontent.com/gokuldxc/cicd/main/deploy.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/gokuldxc/cicd/main/deploymentParameters.json'
     deploymentMode: 'Incremental'
-- script: |
-    apt install apache2
-  displayName: 'npm install'
