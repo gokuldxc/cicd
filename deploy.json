@@ -83,15 +83,6 @@
                     },
                     "securityType": "TrustedLaunch"
                 },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "properties": {
-                                "deleteOption": "Delete"
-                            }
-                        }
-                    ]
-                },
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true
