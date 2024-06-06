@@ -15,10 +15,6 @@
         "disks_Ubuntu22_04_OsDisk_1_9d6374bbdc344b02b7c53cff64a2b229_externalid": {
             "defaultValue": "/subscriptions/4f1c4487-5965-44e4-b539-01b2e5d3994a/resourceGroups/RG_TEST/providers/Microsoft.Compute/disks/Ubuntu_arm_OsDisk_1_9d6374bbdc344b02b7c53cff64a2b229",
             "type": "String"
-        },
-        "networkInterfaces_ubuntu22_04491_externalid": {
-            "defaultValue": "/subscriptions/4f1c4487-5965-44e4-b539-01b2e5d3994a/resourceGroups/RG_test/providers/Microsoft.Network/networkInterfaces/Ubuntu_arm491",
-            "type": "String"
         }
     },
     "variables": {},
@@ -90,7 +86,6 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[parameters('networkInterfaces_ubuntu22_04491_externalid')]",
                             "properties": {
                                 "deleteOption": "Delete"
                             }
