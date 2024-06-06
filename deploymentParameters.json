@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "TestName": {
+        "value": "ubuntu"
+      },
+      "TestAdminUserName": {
+        "value": "azureuser"
+      },
+      "TestAdminPassword": {
+        "value": "asdadadads"
+      },
+      "TestUbuntuOSVersion": {
+        "value": "14.04.2-LTS"
+      },
+      "testType": {
+        "value": "Standard_LRS"
+      }
+    }
+  }
