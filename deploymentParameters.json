@@ -7,21 +7,6 @@
         },
         "extensions_enablevmAccess_password": {
             "value": "oiyoj8m*gTQsfaz"
-        },
-        "extensions_enablevmAccess_ssh_key": {
-            "value": null
-        },
-        "extensions_enablevmAccess_reset_ssh": {
-            "value": null
-        },
-        "extensions_enablevmAccess_remove_user": {
-            "value": null
-        },
-        "extensions_enablevmAccess_expiration": {
-            "value": null
-        },
-        "virtualMachines_Ubuntu_arm_name": {
-            "value": null
         }
     }
 }
