@@ -8,18 +8,6 @@
         "extensions_enablevmAccess_password": {
             "type": "SecureString"
         },
-        "extensions_enablevmAccess_ssh_key": {
-            "type": "SecureString"
-        },
-        "extensions_enablevmAccess_reset_ssh": {
-            "type": "SecureString"
-        },
-        "extensions_enablevmAccess_remove_user": {
-            "type": "SecureString"
-        },
-        "extensions_enablevmAccess_expiration": {
-            "type": "SecureString"
-        },
         "virtualMachines_Ubuntu_arm_name": {
             "defaultValue": "Ubuntu_arm",
             "type": "String"
