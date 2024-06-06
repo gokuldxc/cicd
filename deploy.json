@@ -42,8 +42,7 @@
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
-                            "storageAccountType": "Premium_LRS",
-                            "id": "[parameters('disks_ubuntu_arm_OsDisk_1_fd74ebd5f7ba48ac962fa0dafe64ac99_externalid')]"
+                            "storageAccountType": "Premium_LRS"
                         },
                         "deleteOption": "Delete",
                         "diskSizeGB": 30
