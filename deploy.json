@@ -2,167 +2,144 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "TestName": {
-            "type": "string",
-            "minLength": 1
+        "extensions_enablevmAccess_username": {
+            "type": "SecureString"
         },
-        "TestAdminUserName": {
-            "type": "string",
-            "minLength": 1
+        "extensions_enablevmAccess_password": {
+            "type": "SecureString"
         },
-        "TestAdminPassword": {
-            "type": "securestring"
+        "extensions_enablevmAccess_ssh_key": {
+            "type": "SecureString"
         },
-        "TestUbuntuOSVersion": {
-            "type": "string",
-            "defaultValue": "14.04.2-LTS",
-            "allowedValues": [
-                "12.04.5-LTS",
-                "14.04.2-LTS",
-                "15.04"
-            ]
+        "extensions_enablevmAccess_reset_ssh": {
+            "type": "SecureString"
         },
-        "testType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_ZRS",
-                "Standard_GRS",
-                "Standard_RAGRS",
-                "Premium_LRS"
-            ]
+        "extensions_enablevmAccess_remove_user": {
+            "type": "SecureString"
+        },
+        "extensions_enablevmAccess_expiration": {
+            "type": "SecureString"
+        },
+        "virtualMachines_Ubuntu_arm_name": {
+            "defaultValue": "Ubuntu_arm",
+            "type": "String"
+        },
+        "disks_Ubuntu22_04_OsDisk_1_9d6374bbdc344b02b7c53cff64a2b229_externalid": {
+            "defaultValue": "/subscriptions/4f1c4487-5965-44e4-b539-01b2e5d3994a/resourceGroups/RG_TEST/providers/Microsoft.Compute/disks/Ubuntu_arm_OsDisk_1_9d6374bbdc344b02b7c53cff64a2b229",
+            "type": "String"
+        },
+        "networkInterfaces_ubuntu22_04491_externalid": {
+            "defaultValue": "/subscriptions/4f1c4487-5965-44e4-b539-01b2e5d3994a/resourceGroups/RG_test/providers/Microsoft.Network/networkInterfaces/Ubuntu_arm491",
+            "type": "String"
         }
     },
+    "variables": {},
     "resources": [
         {
-            "name": "[variables('TestNicName')]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2015-06-15",
-            "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', 'vnet-test')]"
-            ],
-            "tags": {
-                "displayName": "TestNic"
-            },
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "subnet": {
-                                "id": "[variables('TestSubnetRef')]"
-                            }
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "name": "[parameters('TestName')]",
             "type": "Microsoft.Compute/virtualMachines",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2015-06-15",
-            "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', variables('testName'))]",
-                "[concat('Microsoft.Network/networkInterfaces/', variables('TestNicName'))]"
-            ],
-            "tags": {
-                "displayName": "Test"
-            },
+            "apiVersion": "2024-03-01",
+            "name": "[parameters('virtualMachines_Ubuntu_arm_name')]",
+            "location": "southindia",
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "[variables('TestVmSize')]"
+                    "vmSize": "Standard_B1s"
                 },
-                "osProfile": {
-                    "computerName": "[parameters('TestName')]",
-                    "adminUsername": "[parameters('TestAdminUsername')]",
-                    "adminPassword": "[parameters('TestAdminPassword')]"
+                "additionalCapabilities": {
+                    "hibernationEnabled": false
                 },
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "[variables('TestImagePublisher')]",
-                        "offer": "[variables('TestImageOffer')]",
-                        "sku": "[parameters('TestUbuntuOSVersion')]",
+                        "publisher": "canonical",
+                        "offer": "0001-com-ubuntu-server-jammy",
+                        "sku": "22_04-lts-gen2",
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "TestOSDisk",
-                        "vhd": {
-                            "uri": "[concat('http://', variables('testName'), '.blob.core.windows.net/', variables('TestStorageAccountContainerName'), '/', variables('TestOSDiskName'), '.vhd')]"
-                        },
+                        "osType": "Linux",
+                        "name": "[concat(parameters('virtualMachines_Ubuntu_arm_name'), '_OsDisk_1_9d6374bbdc344b02b7c53cff64a2b229')]",
+                        "createOption": "FromImage",
                         "caching": "ReadWrite",
-                        "createOption": "FromImage"
-                    }
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_Ubuntu22_04_OsDisk_1_9d6374bbdc344b02b7c53cff64a2b229_externalid')]"
+                        },
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 30
+                    },
+                    "dataDisks": [],
+                    "diskControllerType": "SCSI"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_Ubuntu_arm_name')]",
+                    "adminUsername": "azureuser",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "/home/azureuser/.ssh/authorized_keys",
+                                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCn+6vbRaWw+uHXzmdhh495hmAaRklDJdlRj+H5jtwhtyVhYn5dNTa3mNmUslX864YspLFpeeQlrpuOiQ3hXLJfImnaUW47Rvn9t4+oyJ7WPyK0PX2Ap383GNhHYYGI0cAY/wRhzpQaSzZ+VztCg0HY7lIDYFzi9hfTQ6hSapAh3A18BZsbYLKdzAay0ZB4frHYI1hnzADFxs4gIwSq9ss8U2eBTXyzMlxQCgOGsUpuv+j2q8WAfNPjdaNVRpPtgHd5QMcsMugdjLXPU+VS4oJarLJl8bq+V/00D07S8gqH6vCNNUqe2zlU++h8lfRnw1Jv9eRaHx1vAWUn0Oe5Mvy0UfxHjHr6vWeGQpoXavgHyWKuKAOJ8TdYTDx8XszNtmQtIugnzFJRn3maxB4eq7UMmPEmUhapgJgOlRfCLXM2opNI6sOADH6dRN9/4iUTZ0ObqUlsuX280joVe39HPV9lh1oTQvkQ7ulQBxHlBUhAlKQl33DInMhTgIPePB+i0wU= generated-by-azure"
+                                }
+                            ]
+                        },
+                        "provisionVMAgent": true,
+                        "patchSettings": {
+                            "patchMode": "ImageDefault",
+                            "assessmentMode": "ImageDefault"
+                        },
+                        "enableVMAgentPlatformUpdates": false
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "securityProfile": {
+                    "uefiSettings": {
+                        "secureBootEnabled": true,
+                        "vTpmEnabled": true
+                    },
+                    "securityType": "TrustedLaunch"
                 },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('TestNicName'))]"
+                            "id": "[parameters('networkInterfaces_ubuntu22_04491_externalid')]",
+                            "properties": {
+                                "deleteOption": "Delete"
+                            }
                         }
                     ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
                 }
             }
         },
         {
-            "name": "vnet-test",
-            "type": "Microsoft.Network/virtualNetworks",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2015-06-15",
-            "dependsOn": [],
-            "tags": {
-                "displayName": "vnet-test"
-            },
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2024-03-01",
+            "name": "[concat(parameters('virtualMachines_Ubuntu_arm_name'), '/enablevmAccess')]",
+            "location": "southindia",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_Ubuntu_arm_name'))]"
+            ],
             "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('vnet-testPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[variables('vnet-testSubnet1Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('vnet-testSubnet1Prefix')]"
-                        }
-                    },
-                    {
-                        "name": "[variables('vnet-testSubnet2Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('vnet-testSubnet2Prefix')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "name": "[variables('testName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2015-06-15",
-            "dependsOn": [],
-            "tags": {
-                "displayName": "test"
-            },
-            "properties": {
-                "accountType": "[parameters('testType')]"
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.OSTCExtensions",
+                "type": "VMAccessForLinux",
+                "typeHandlerVersion": "1.5",
+                "settings": {},
+                "protectedSettings": {
+                    "username": "[parameters('extensions_enablevmAccess_username')]",
+                    "password": "[parameters('extensions_enablevmAccess_password')]",
+                    "ssh_key": "[parameters('extensions_enablevmAccess_ssh_key')]",
+                    "reset_ssh": "[parameters('extensions_enablevmAccess_reset_ssh')]",
+                    "remove_user": "[parameters('extensions_enablevmAccess_remove_user')]",
+                    "expiration": "[parameters('extensions_enablevmAccess_expiration')]"
+                }
             }
         }
-    ],
-    "variables": {
-        "TestImagePublisher": "Canonical",
-        "TestImageOffer": "UbuntuServer",
-        "TestOSDiskName": "TestOSDisk",
-        "TestVmSize": "Standard_D1",
-        "TestVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'RG_test-vnet')]",
-        "TestSubnetRef": "[concat(variables('TestVnetID'), '/subnets/', variables('RG_test-vnetSubnet1Name'))]",
-        "TestStorageAccountContainerName": "vhds",
-        "TestNicName": "[concat(parameters('TestName'), 'NetworkInterface')]",
-        "vnet-testPrefix": "10.0.0.0/16",
-        "vnet-testSubnet1Name": "default",
-        "vnet-testSubnet1Prefix": "10.0.0.0/24",
-        "testName": "[concat('test', uniqueString(resourceGroup().id))]"
-    }
+    ]
 }

@@ -2,20 +2,26 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "TestName": {
-        "value": "ubuntu"
-      },
-      "TestAdminUserName": {
-        "value": "azureuser"
-      },
-      "TestAdminPassword": {
-        "value": "oiyoj8*gTQsfagz"
-      },
-      "TestUbuntuOSVersion": {
-        "value": "14.04.2-LTS"
-      },
-      "testType": {
-        "value": "Standard_LRS"
-      }
+        "extensions_enablevmAccess_username": {
+            "value": "azureuser"
+        },
+        "extensions_enablevmAccess_password": {
+            "value": "oiyoj8m*gTQsfaz"
+        },
+        "extensions_enablevmAccess_ssh_key": {
+            "value": null
+        },
+        "extensions_enablevmAccess_reset_ssh": {
+            "value": null
+        },
+        "extensions_enablevmAccess_remove_user": {
+            "value": null
+        },
+        "extensions_enablevmAccess_expiration": {
+            "value": null
+        },
+        "virtualMachines_Ubuntu_arm_name": {
+            "value": null
+        }
     }
-  }
+}
