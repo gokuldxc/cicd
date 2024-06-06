@@ -157,7 +157,7 @@
         "TestOSDiskName": "TestOSDisk",
         "TestVmSize": "Standard_D1",
         "TestVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'RG_test-vnet')]",
-        "TestSubnetRef": "[concat(variables('TestVnetID'), '/subnets/', variables('vnet-testSubnet1Name'))]",
+        "TestSubnetRef": "[concat(variables('TestVnetID'), '/subnets/', variables('RG_test-vnetSubnet1Name'))]",
         "TestStorageAccountContainerName": "vhds",
         "TestNicName": "[concat(parameters('TestName'), 'NetworkInterface')]",
         "vnet-testPrefix": "10.0.0.0/16",
