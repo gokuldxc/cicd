@@ -1,21 +1,32 @@
 trigger:
-- main
-
-pool:
-  vmImage: ubuntu-latest
-
-steps:
-
-# Starter pipeline
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'VM deploy'
-    subscriptionId: '4f1c4487-5965-44e4-b539-01b2e5d3994a'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'RG_test'
-    location: 'Central US'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/gokuldxc/cicd/main/deploy.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/gokuldxc/cicd/main/deploymentParameters.json'
-    deploymentMode: 'Incremental'
+    - main
+    
+    pool:
+      vmImage: ubuntu-latest
+    
+    stages:
+    - stage: Build
+      displayName: Build stage
+      jobs:  
+      - job: Build
+        displayName: Build
+        steps:
+        - task: UseNode@1
+          inputs:
+            version: '16.x'
+          displayName: 'Install Node.js'
+        - script: |
+            npm install
+            npm run build --if-present
+            npm run test --if-present
+          displayName: 'npm install, build and test'
+        - task: ArchiveFiles@2
+          displayName: 'Archive files'
+          inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+            includeRootFolder: false
+            archiveType: zip
+            archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            replaceExistingArchive: true
+        - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+          artifact: drop
