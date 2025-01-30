@@ -197,7 +197,9 @@
                             "sourcePortRange": "*",
                             "destinationAddressPrefix": "*",
                             "destinationPortRange": "22"
-                        },
+                        }
+                    },
+                    {
                         "name": "Custom",
                         "properties": {
                             "priority": 1001,
