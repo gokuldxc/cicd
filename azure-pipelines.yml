@@ -15,4 +15,4 @@ steps:
     location: 'South India'
     templateLocation: 'Linked artifact'
     csmFile: 'Ubuntu'
-    deploymentMode: 'Complete'
+    deploymentMode: 'Incremental'
