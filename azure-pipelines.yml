@@ -16,3 +16,4 @@ steps:
     templateLocation: 'Linked artifact'
     csmFile: 'Ubuntu'
     deploymentMode: 'Incremental'
+    overrideParameters: '-adminUsername "azureadmin" -adminPasswordOrKey "Flob9Fon@Flob9Fon" -ubuntuOSVersion "Ubuntu-2204"'
