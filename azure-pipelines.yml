@@ -1,8 +1,9 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  RG: 'RG_test1'
+  VMname: 'simpleLinuxVM'
 
 steps:
 - task: AzureResourceManagerTemplateDeployment@3
@@ -11,15 +12,15 @@ steps:
     azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
     subscriptionId: '4f1c4487-5965-44e4-b539-01b2e5d3994a'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'RG_test1'
+    resourceGroupName: $(RG)
     location: 'South India'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://github.com/gokuldxc/cicd/raw/refs/heads/main/deploy.json'
     deploymentMode: 'Incremental'
-    overrideParameters: '-vmName "simpleLinuxVM" -vmSize "Standard_D2s_v3" -virtualNetworkName "vNet" -subnetName "Subnet" -networkSecurityGroupName "SecGroupNet" -adminUsername "azureadmin" -adminPasswordOrKey "Flob9Fon@Flob9Fon" -ubuntuOSVersion "Ubuntu-2204"'
+    overrideParameters: '-vmName $(VMname) -vmSize "Standard_D2s_v3" -virtualNetworkName "vNet" -subnetName "Subnet" -networkSecurityGroupName "SecGroupNet" -adminUsername "azureadmin" -adminPasswordOrKey "Flob9Fon@Flob9Fon" -ubuntuOSVersion "Ubuntu-2204"'
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az vm run-command invoke -g RG_test1 -n simpleLinuxVM --command-id RunShellScript --scripts "apt-get update && apt-get install -y nginx"'
+    inlineScript: 'az vm run-command invoke -g $(RG) -n $(VMname) --command-id RunShellScript --scripts "apt-get update && apt-get install -y nginx"'
