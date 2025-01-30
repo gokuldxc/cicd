@@ -1,26 +1,32 @@
 trigger:
 - main
 
+parameters:
+- name: VMs
+  type: object
+  default: [LinuxVM1,LinuxVM2]
+
 variables:
   RG: 'RG_test1'
-  VMname: 'simpleLinuxVM'
+  VMname: 'LinuxVM'
 
 steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
-    subscriptionId: '4f1c4487-5965-44e4-b539-01b2e5d3994a'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: $(RG)
-    location: 'South India'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/gokuldxc/cicd/raw/refs/heads/main/deploy.json'
-    deploymentMode: 'Incremental'
-    overrideParameters: '-vmName $(VMname) -vmSize "Standard_D2s_v3" -virtualNetworkName "vNet" -subnetName "Subnet" -networkSecurityGroupName "SecGroupNet" -adminUsername "azureadmin" -adminPasswordOrKey "Flob9Fon@Flob9Fon" -ubuntuOSVersion "Ubuntu-2204"'
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az vm run-command invoke -g $(RG) -n $(VMname) --command-id RunShellScript --scripts "apt update && apt install -y ansible;wget https://raw.githubusercontent.com/gokuldxc/cicd/refs/heads/main/nginx.yml -O /root/nginx.yml;ansible-playbook -v /root/nginx.yml| tee /tmp/output.txt"'
+- ${{ each VMname in parameters.VMs }}
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
+      subscriptionId: '4f1c4487-5965-44e4-b539-01b2e5d3994a'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: $(RG)
+      location: 'South India'
+      templateLocation: 'URL of the file'
+      csmFileLink: 'https://github.com/gokuldxc/cicd/raw/refs/heads/main/deploy.json'
+      deploymentMode: 'Incremental'
+      overrideParameters: '-vmName $(VMname) -vmSize "Standard_B1s" -virtualNetworkName "vNet" -subnetName "Subnet" -networkSecurityGroupName "SecGroupNet" -adminUsername "azureadmin" -adminPasswordOrKey "Flob9Fon@Flob9Fon" -ubuntuOSVersion "Ubuntu-2204"'
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az vm run-command invoke -g $(RG) -n $(VMname) --command-id RunShellScript --scripts "apt update && apt install -y ansible;wget https://raw.githubusercontent.com/gokuldxc/cicd/refs/heads/main/nginx.yml -O /root/nginx.yml;ansible-playbook -v /root/nginx.yml| tee /tmp/output.txt"'
