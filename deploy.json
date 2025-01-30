@@ -198,6 +198,19 @@
                             "destinationAddressPrefix": "*",
                             "destinationPortRange": "22"
                         }
+                    },
+                    {
+                        "name": "Allow-Web",
+                        "properties": {
+                            "priority": 1001,
+                            "protocol": "Tcp",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "443"
+                        }
                     }
                 ]
             }
