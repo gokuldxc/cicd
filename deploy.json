@@ -189,7 +189,7 @@
                     {
                         "name": "Allow-Web",
                         "properties": {
-                            "priority": 1001,
+                            "priority": 1002,
                             "protocol": "Tcp",
                             "access": "Allow",
                             "direction": "Inbound",
