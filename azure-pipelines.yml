@@ -11,7 +11,7 @@ steps:
     azureResourceManagerConnection: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
     subscriptionId: '4f1c4487-5965-44e4-b539-01b2e5d3994a'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'RG_test'
+    resourceGroupName: 'RG_test1'
     location: 'South India'
     templateLocation: 'Linked artifact'
     csmFile: 'Ubuntu'
