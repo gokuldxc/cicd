@@ -1,6 +1,9 @@
 trigger:
 - main
 
+pool:
+  name: Ubuntu
+
 parameters:
 - name: VMs
   type: object
