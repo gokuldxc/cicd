@@ -27,13 +27,9 @@ steps:
       csmFileLink: 'https://github.com/gokuldxc/cicd/raw/refs/heads/main/deploy.json'
       deploymentMode: 'Incremental'
       overrideParameters: '-vmName ${{VMname}} -vmSize "Standard_B1s" -virtualNetworkName "vNet" -subnetName "Subnet" -networkSecurityGroupName "SecGroupNet" -adminUsername "azureadmin" -adminPasswordOrKey "Flob9Fon@Flob9Fon" -ubuntuOSVersion "Ubuntu-2204"'
-  - task: Bash@3
-    displayName: 'Install Ansible and Run Playbook on VM'
+  - task: AzureCLI@2
     inputs:
-      targetType: 'inline'
-      script: |
-        az vm run-command invoke \
-          --resource-group $(RG) \
-          --name $(VMname) \
-          --command-id RunShellScript \
-          --scripts "apt update && apt install -y ansible; wget https://raw.githubusercontent.com/gokuldxc/cicd/refs/heads/main/nginx.yml -O /root/nginx.yml; ansible-playbook -v /root/nginx.yml | tee /tmp/output.txt"
+      azureSubscription: 'Visual Studio Enterprise Subscription(4f1c4487-5965-44e4-b539-01b2e5d3994a)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az vm run-command invoke -g $(RG) -n ${{VMname}} --command-id RunShellScript --scripts "apt update && apt install -y ansible;wget https://raw.githubusercontent.com/gokuldxc/cicd/refs/heads/main/nginx.yml -O /root/nginx.yml;ansible-playbook -v /root/nginx.yml| tee /tmp/output.txt"'
